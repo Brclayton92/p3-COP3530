@@ -7,19 +7,24 @@ class Graphs_P3
 {
 private:
     struct vertexNode {
+        bool isHead;
     public:
         vertexNode *next;
         int value;
         int weight;
 
-        vertexNode(int value){
+        explicit vertexNode(int value, bool isHead, int weight, vertexNode* next){
             this->value = value;
+            this->isHead = isHead;
+            this->weight = weight;
+            this->next = next;
         }
     };
 
     const static int MAX_NUM_VERTICIES = 51;
     vertexNode vertArray[51];
     int numVerticies;
+    int checkForVertex[51];
 public:
     void insertVertex(int vertex); //inserts new vertex in graph
     void insertEdge(int from, int to, int weight);  //inserts new edge in graph
@@ -27,16 +32,60 @@ public:
     int getWeight(int from, int to);  //returns the weight of the edge between the vertices from and to
     int * getAdjacent(int vertex);  //return an array of integers representing vertices adjacent to vertex
     void printDijkstra(int source);  //prints result of running Dijkstra algorithm with source vertex
-    void printGraph(); //prints graph in a format sorted by ascending vertex and edge list
+    void printGraph(); //prints graph in a format sorted by ascending vertex and edge list\
+
+    /* helper methods*/
+
+    bool isVertex(int vertex);;
 };
 
 void Graphs_P3::insertVertex(int vertex) {
-    vertArray[vertex] = vertexNode(vertex);
+    vertArray[vertex] = vertexNode(vertex, true, -999, nullptr);
+    checkForVertex[vertex] = 1;
     numVerticies++;
 }
 
-void Graphs_P3::insertEdge(int from, int to, int weight) {
+bool Graphs_P3::isVertex(int vertex) {
+    if (checkForVertex[vertex] == 0){
+        return false;
+    }
 
+    else {
+        return true;
+    }
+}
+
+void Graphs_P3::insertEdge(int from, int to, int weight) {
+    if(!isVertex(from)){
+        insertVertex(from);
+    }
+
+    if (!isVertex(to)){
+        insertVertex(to);
+    }
+
+    vertexNode *head = &vertArray[from];
+    vertexNode *current = head;
+    vertexNode *newEdge = new vertexNode(to, false, weight, nullptr);
+
+    while (current->next != nullptr){
+        current = current->next;
+    }
+
+    current->next = newEdge;
+}
+
+bool Graphs_P3::isEdge(int from, int to) {
+    vertexNode *current = &vertArray[from];
+
+    while(current != nullptr){
+        if(current->value == to){
+            return true;
+        }
+        current = current->next;
+    }
+
+    return false;
 }
 
 int main()
