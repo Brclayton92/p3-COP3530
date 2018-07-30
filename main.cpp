@@ -44,7 +44,7 @@ public:
     void insertEdge(int from, int to, int weight);  //inserts new edge in graph
     bool isEdge(int from, int to);  //returns true if there is an edge between the vertices from and to
     int getWeight(int from, int to);  //returns the weight of the edge between the vertices from and to
-    //int * getAdjacent(int vertex);  //return an array of integers representing vertices adjacent to vertex
+    int * getAdjacent(int vertex);  //return an array of integers representing vertices adjacent to vertex
     //void printDijkstra(int source);  //prints result of running Dijkstra algorithm with source vertex
     //void printGraph(); //prints graph in a format sorted by ascending vertex and edge list\
 
@@ -115,6 +115,18 @@ int Graphs_P3::getWeight(int from, int to) {
 
     return std::numeric_limits<int>::max();
 }
+
+int *Graphs_P3::getAdjacent(int vertex) {
+    vertexNode *current = &vertArray[vertex];
+    current = current->next;
+    vector<int> v;
+
+    while (current != nullptr){
+        v.push_back(current->value);
+        current = current->next;
+    }
+
+    return &v[0]; // FIXME vector needs to be sorted before returning.
 
 int main()
 {
