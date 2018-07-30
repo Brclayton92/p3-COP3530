@@ -1,38 +1,51 @@
 #include <iostream>
 #include <vector>
 #include <list>
-
 using namespace std;
+
+
+
 class Graphs_P3
 {
-private:
     struct vertexNode {
-        bool isHead;
-    public:
+        bool headNode;
         vertexNode *next;
         int value;
         int weight;
 
-        explicit vertexNode(int value, bool isHead, int weight, vertexNode* next){
+        vertexNode() = default;
+
+        vertexNode(int value, bool isHead, int weight, vertexNode* next){
             this->value = value;
-            this->isHead = isHead;
+            headNode = isHead;
             this->weight = weight;
             this->next = next;
         }
     };
 
+private:
     const static int MAX_NUM_VERTICIES = 51;
     vertexNode vertArray[51];
-    int numVerticies;
+    int numVerticies = 0;
     int checkForVertex[51];
 public:
+    /* constructor */
+
+    Graphs_P3(){
+        for(int i = 0; i < MAX_NUM_VERTICIES; i++){
+            checkForVertex[i] = 0;
+        }
+    }
+
+    /*primary methods*/
+
     void insertVertex(int vertex); //inserts new vertex in graph
     void insertEdge(int from, int to, int weight);  //inserts new edge in graph
     bool isEdge(int from, int to);  //returns true if there is an edge between the vertices from and to
     int getWeight(int from, int to);  //returns the weight of the edge between the vertices from and to
-    int * getAdjacent(int vertex);  //return an array of integers representing vertices adjacent to vertex
-    void printDijkstra(int source);  //prints result of running Dijkstra algorithm with source vertex
-    void printGraph(); //prints graph in a format sorted by ascending vertex and edge list\
+    //int * getAdjacent(int vertex);  //return an array of integers representing vertices adjacent to vertex
+    //void printDijkstra(int source);  //prints result of running Dijkstra algorithm with source vertex
+    //void printGraph(); //prints graph in a format sorted by ascending vertex and edge list\
 
     /* helper methods*/
 
@@ -86,6 +99,10 @@ bool Graphs_P3::isEdge(int from, int to) {
     }
 
     return false;
+}
+
+int Graphs_P3::getWeight(int from, int to) {
+    return 0;
 }
 
 int main()
