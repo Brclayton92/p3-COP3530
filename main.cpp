@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <limits>
 using namespace std;
 
 
@@ -101,13 +102,23 @@ bool Graphs_P3::isEdge(int from, int to) {
     return false;
 }
 
+// FIXME getweight() causes segfault when checking weight of an edge that doesn't exist
 int Graphs_P3::getWeight(int from, int to) {
-    return 0;
+    vertexNode *current = &vertArray[from];
+
+    while (current != nullptr){
+        if(current->value == to){
+            return current->weight;
+        }
+        current = current->next;
+    }
+
+    return std::numeric_limits<int>::max();
 }
 
 int main()
 {
-/*
+
     //DO NOT CHANGE THIS FUNCTION. CHANGE YOUR IMPLEMENTATION CODE TO MAKE IT WORK
     int noOfLines, operation, vertex, to, fro, weight,source,j;
     int *arr;
@@ -138,6 +149,7 @@ int main()
                 cin>>to;
                 cout<<g.getWeight(fro,to)<<"\n";
                 break;
+/*
             case 5:
                 cin>>vertex;
                 arr=g.getAdjacent(vertex);
@@ -158,7 +170,8 @@ int main()
                 g.printGraph();
                 cout<<"\n";
                 break;
+*/
         }
     }
-*/
+
 }
