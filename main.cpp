@@ -45,7 +45,7 @@ public:
     void insertEdge(int from, int to, int weight);  //inserts new edge in graph
     bool isEdge(int from, int to);  //returns true if there is an edge between the vertices from and to
     int getWeight(int from, int to);  //returns the weight of the edge between the vertices from and to
-    int * getAdjacent(int vertex);  //return an array of integers representing vertices adjacent to vertex
+    vector<int> getAdjacent(int vertex);  //return an array of integers representing vertices adjacent to vertex
     //void printDijkstra(int source);  //prints result of running Dijkstra algorithm with source vertex
     //void printGraph(); //prints graph in a format sorted by ascending vertex and edge list\
 
@@ -118,29 +118,26 @@ int Graphs_P3::getWeight(int from, int to) {
     return std::numeric_limits<int>::max();
 }
 
-int *Graphs_P3::getAdjacent(int vertex) {
+vector<int> Graphs_P3::getAdjacent(int vertex) {
     vertexNode *curr = &vertArray[vertex];
-    int arrSize = curr->numEdges;
-    int *arr = new int[arrSize];
+    vector<int> arr;
     curr = curr->next;
     int i = 0;
 
     while (curr != nullptr) {
-        arr[i] = curr->value;
-        i++;
-        cout << "test: " << i;
+        arr.push_back(curr->value);
         curr = curr->next;
     }
 
-    return &arr[0]; // FIXME array needs to be sorted before returning.
+    return arr; // FIXME array needs to be sorted before returning.
 }
 
 int main()
 {
-
     //DO NOT CHANGE THIS FUNCTION. CHANGE YOUR IMPLEMENTATION CODE TO MAKE IT WORK
     int noOfLines, operation, vertex, to, fro, weight,source,j;
-    int *arr;
+    vector<int> arr;
+    int arrSize;
     Graphs_P3 g;
     cin>>noOfLines;
     for(int i=0;i<noOfLines;i++)
@@ -171,10 +168,11 @@ int main()
             case 5:
                 cin>>vertex;
                 arr=g.getAdjacent(vertex);
+                arrSize = arr.size();
                 j=0;
-                while((arr+j)!=nullptr)
+                while(j<arrSize)
                 {
-                    cout<<*(arr+j);
+                    cout<<arr[j]<<" ";
                     j++;
                 }
                 cout<<"\n";
@@ -192,5 +190,4 @@ int main()
 */
         }
     }
-
 }
