@@ -2,9 +2,10 @@
 #include <vector>
 #include <list>
 #include <limits>
+#include<queue>
 using namespace std;
 
-typedef pair<int, int> pairs;
+typedef pair<int, int> vertPair;
 
 class Graphs_P3
 {
@@ -26,6 +27,7 @@ class Graphs_P3
     };
 
 private:
+    const int INF = std::numeric_limits<int>::max();
     const static int MAX_NUM_VERTICIES = 51;
     vertexNode vertArray[51];
     int numVerticies = 0;
@@ -133,7 +135,37 @@ vector<int> Graphs_P3::getAdjacent(int vertex) {
 }
 
 void Graphs_P3::printDijkstra(int source) {
+    priority_queue<vertPair, vector<vertPair>, greater<vertPair>> pq;
+    vector<int> weights(numVerticies, INF);
+    string pathBase = to_string(source);
+    vector<string> paths(numVerticies, pathBase);
 
+    pq.push(make_pair(0, source));
+    weights[source] = 0;
+
+    while(!pq.empty()){
+        int D = pq.top().second;
+        pq.pop();
+        vertexNode *top = &vertArray[D];
+        vertexNode *current = top->next;
+
+
+        while(current != nullptr){
+            if (weights[current->value] > weights[top->value] + current->weight){
+                weights[current->value] = weights[top->value] + current->weight;
+                paths[current->value] = paths[top->value] + "-" + to_string(current->value);
+                pq.push(make_pair(weights[current->value], current->value));
+            }
+            current = current->next;
+        }
+    }
+
+    cout<< "V D\n";
+    for (int i = 0; i < numVerticies; ++i) {
+        if (i != source) {
+            cout << i << " " << weights[i] << " " << paths[i] << "\n";
+        }
+    }
 }
 
 int main()
@@ -181,12 +213,12 @@ int main()
                 }
                 cout<<"\n";
                 break;
-/*
             case 6:
                 cin>>source;
                 g.printDijkstra(source);
                 cout<<"\n";
                 break;
+/*
             case 7:
                 g.printGraph();
                 cout<<"\n";
