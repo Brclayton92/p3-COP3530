@@ -13,6 +13,7 @@ class Graphs_P3
         vertexNode *next;
         int value;
         int weight;
+        int numEdges = 0;
 
         vertexNode() = default;
 
@@ -50,7 +51,7 @@ public:
 
     /* helper methods*/
 
-    bool isVertex(int vertex);;
+    bool isVertex(int vertex);
 };
 
 void Graphs_P3::insertVertex(int vertex) {
@@ -87,6 +88,7 @@ void Graphs_P3::insertEdge(int from, int to, int weight) {
     }
 
     current->next = newEdge;
+    head->numEdges = head->numEdges + 1;
 }
 
 bool Graphs_P3::isEdge(int from, int to) {
@@ -117,16 +119,21 @@ int Graphs_P3::getWeight(int from, int to) {
 }
 
 int *Graphs_P3::getAdjacent(int vertex) {
-    vertexNode *current = &vertArray[vertex];
-    current = current->next;
-    vector<int> v;
+    vertexNode *curr = &vertArray[vertex];
+    int arrSize = curr->numEdges;
+    int *arr = new int[arrSize];
+    curr = curr->next;
+    int i = 0;
 
-    while (current != nullptr){
-        v.push_back(current->value);
-        current = current->next;
+    while (curr != nullptr) {
+        arr[i] = curr->value;
+        i++;
+        cout << "test: " << i;
+        curr = curr->next;
     }
 
-    return &v[0]; // FIXME vector needs to be sorted before returning.
+    return &arr[0]; // FIXME array needs to be sorted before returning.
+}
 
 int main()
 {
@@ -161,7 +168,6 @@ int main()
                 cin>>to;
                 cout<<g.getWeight(fro,to)<<"\n";
                 break;
-/*
             case 5:
                 cin>>vertex;
                 arr=g.getAdjacent(vertex);
@@ -173,6 +179,7 @@ int main()
                 }
                 cout<<"\n";
                 break;
+/*
             case 6:
                 cin>>source;
                 g.printDijkstra(source);
