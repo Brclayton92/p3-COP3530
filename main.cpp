@@ -4,7 +4,7 @@
 #include <limits>
 using namespace std;
 
-
+typedef pair<int, int> pairs;
 
 class Graphs_P3
 {
@@ -46,7 +46,7 @@ public:
     bool isEdge(int from, int to);  //returns true if there is an edge between the vertices from and to
     int getWeight(int from, int to);  //returns the weight of the edge between the vertices from and to
     vector<int> getAdjacent(int vertex);  //return an array of integers representing vertices adjacent to vertex
-    //void printDijkstra(int source);  //prints result of running Dijkstra algorithm with source vertex
+    void printDijkstra(int source);  //prints result of running Dijkstra algorithm with source vertex
     //void printGraph(); //prints graph in a format sorted by ascending vertex and edge list\
 
     /* helper methods*/
@@ -130,6 +130,10 @@ vector<int> Graphs_P3::getAdjacent(int vertex) {
     }
 
     return arr; // FIXME array needs to be sorted before returning.
+}
+
+void Graphs_P3::printDijkstra(int source) {
+
 }
 
 int main()
