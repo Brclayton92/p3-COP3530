@@ -2,6 +2,7 @@
 #include <vector>
 #include <limits>
 #include<queue>
+#include <algorithm>
 using namespace std;
 
 typedef pair<int, int> vertPair;
@@ -11,14 +12,14 @@ class Graphs_P3
     struct vertexNode {
         bool headNode;
         vertexNode *next;
-        int value;
+        int name;
         int weight;
         int numEdges = 0;
 
         vertexNode() = default;
 
         vertexNode(int value, bool isHead, int weight, vertexNode* next){
-            this->value = value;
+            this->name = value;
             headNode = isHead;
             this->weight = weight;
             this->next = next;
@@ -110,7 +111,7 @@ bool Graphs_P3::isEdge(int from, int to) {
     vertexNode *current = &vertArray[from];
 
     while(current != nullptr){
-        if(current->value == to){
+        if(current->name == to){
             return true;
         }
         current = current->next;
@@ -124,7 +125,7 @@ int Graphs_P3::getWeight(int from, int to) {
     vertexNode *current = &vertArray[from];
 
     while (current != nullptr){
-        if(current->value == to){
+        if(current->name == to){
             return current->weight;
         }
         current = current->next;
@@ -140,35 +141,43 @@ vector<int> Graphs_P3::getAdjacent(int vertex) {
     int i = 0;
 
     while (curr != nullptr) {
-        arr.push_back(curr->value);
+        arr.push_back(curr->name);
         curr = curr->next;
     }
 
-    return arr; // FIXME array needs to be sorted before returning.
+    sort(arr.begin(), arr.end());
+
+    return arr;
 }
 
 void Graphs_P3::printDijkstra(int source) {
-    priority_queue<vertPair, vector<vertPair>, greater<vertPair>> minHeap;
-    vector<int> weights(MAX_NUM_VERTICIES, INF);
+    priority_queue<vertPair, vector<vertPair>, greater<vertPair>> minHeap; //Minheap of pairs contraining (weight from source, vertex name)
+    vector<int> weights(MAX_NUM_VERTICIES, INF); // vector of weights from source for each vert (weights[vert1->name] = weight1), all weights start at INF
     string pathBase = to_string(source);
-    vector<string> paths(MAX_NUM_VERTICIES, pathBase);
+    vector<string> paths(MAX_NUM_VERTICIES, pathBase); // vector of paths from source to vert (paths[vert1->name] = Vert1PathToSourceString), all paths initialized as toString(source)
 
-    minHeap.push(make_pair(0, source));
+    minHeap.push(make_pair(0, source)); //adds source vertex to minheap with weight 0
     weights[source] = 0;
 
+    // on each iteration: takes the vertex with the lowest weight from source and assigns it to *top (will always be the top item of the minheap), removes that vertex from the minheap
+    // and then checks all adjacent nodes (represented as variable "adjToTop") to *top to see if there is a path to source through *top that is shorter than adjToTop's current shortest path
+    // from source (which is stored in weights[adjToTop->name]).
+    // if a shorter path to source is found through *top, adjToTop's weight-to-source name is updated in weight[adjToTop->name], and a new pair(weights[adjToTop], adjToTop->name) is added
+    // to minHeap, so vertices adjacent to "adjToTop" can be checked for a shorter path from source.
+    //*top is always the source vertex on the first iteration, and Weights are always updated when they are reached for the first time because weights are initialized to INF.
     while(!minHeap.empty()){
-        int D = minHeap.top().second;
-        minHeap.pop();
-        vertexNode *top = &vertArray[D];
-        vertexNode *current = top->next;
+        int D = minHeap.top().second; // sets D to name of vertex in the minheap with smallest distance to source
+        minHeap.pop(); // removes D (from previous line) from minheap
+        vertexNode *top = &vertArray[D]; // vertexNode of vertexName from top of minheap
+        vertexNode *adjToTop = top->next; // first node in adjacency list with head "*top"
 
-        while(current != nullptr){
-            if (weights[current->value] > weights[top->value] + current->weight){
-                weights[current->value] = weights[top->value] + current->weight;
-                paths[current->value] = paths[top->value] + "-" + to_string(current->value);
-                minHeap.push(make_pair(weights[current->value], current->value));
+        while(adjToTop != nullptr){
+            if (weights[adjToTop->name] > weights[top->name] + adjToTop->weight){ // checks if there is a path through *top that is shorter than adjToTop's current smallest path from source
+                weights[adjToTop->name] = weights[top->name] + adjToTop->weight;
+                paths[adjToTop->name] = paths[top->name] + "-" + to_string(adjToTop->name);
+                minHeap.push(make_pair(weights[adjToTop->name], adjToTop->name));
             }
-            current = current->next;
+            adjToTop = adjToTop->next;
         }
     }
 
@@ -191,8 +200,8 @@ void Graphs_P3::printGraph() {
     int counter = 0;
     for (int i = 0; i < MAX_NUM_VERTICIES; i ++){
         if (checkForVertex[i] == 1) {
-            cout << vertArray[i].value;
-            vector<int> adjacent = getAdjacent(vertArray[i].value);
+            cout << vertArray[i].name;
+            vector<int> adjacent = getAdjacent(vertArray[i].name);
             int size = adjacent.size();
             int j;
             j=0;
