@@ -162,7 +162,7 @@ void Graphs_P3::printDijkstra(int source) {
     // on each iteration: takes the vertex with the lowest weight from source and assigns it to *top (will always be the top item of the minheap), removes that vertex from the minheap
     // and then checks all adjacent nodes (represented as variable "adjToTop") to *top to see if there is a path to source through *top that is shorter than adjToTop's current shortest path
     // from source (which is stored in weights[adjToTop->name]).
-    // if a shorter path to source is found through *top, adjToTop's weight-to-source name is updated in weight[adjToTop->name], and a new pair(weights[adjToTop], adjToTop->name) is added
+    // if a shorter path to source is found through *top, adjToTop's weight-to-source is updated in weight[adjToTop->name], and a new pair(new-weights[adjToTop], adjToTop->name) is added
     // to minHeap, so vertices adjacent to "adjToTop" can be checked for a shorter path from source.
     //*top is always the source vertex on the first iteration, and Weights are always updated when they are reached for the first time because weights are initialized to INF.
     while(!minHeap.empty()){
@@ -181,6 +181,7 @@ void Graphs_P3::printDijkstra(int source) {
         }
     }
 
+    //prints table of each vertex and their weight-from-source and path-to-source.
     int counter = 1;
     cout<< "V D P\n";
     for (int i = 0; i < MAX_NUM_VERTICIES; ++i) {
@@ -188,7 +189,7 @@ void Graphs_P3::printDijkstra(int source) {
             if(checkForVertex[i] == 1) {
                 cout << i << " " << weights[i] << " " << paths[i];
                 counter++;
-                if (counter != numVerticies){
+                if (counter != numVerticies){ // if statement exists to avoid spacing issue in stepik testing
                     cout << "\n";
                 }
             }
