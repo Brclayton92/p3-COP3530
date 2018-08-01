@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <list>
 #include <limits>
 #include<queue>
 using namespace std;
@@ -49,7 +48,7 @@ public:
     int getWeight(int from, int to);  //returns the weight of the edge between the vertices from and to
     vector<int> getAdjacent(int vertex);  //return an array of integers representing vertices adjacent to vertex
     void printDijkstra(int source);  //prints result of running Dijkstra algorithm with source vertex
-    //void printGraph(); //prints graph in a format sorted by ascending vertex and edge list\
+    void printGraph(); //prints graph in a format sorted by ascending vertex and edge list\
 
     /* helper methods*/
 
@@ -91,6 +90,20 @@ void Graphs_P3::insertEdge(int from, int to, int weight) {
 
     current->next = newEdge;
     head->numEdges = head->numEdges + 1;
+
+    /*
+    //comment out the following code to make directed graphs
+    vertexNode *head2 = &vertArray[to];
+    vertexNode *current2 = head2;
+    vertexNode *newEdge2 = new vertexNode(to, false, weight, nullptr);
+
+    while (current2->next != nullptr){
+        current2 = current2->next;
+    }
+
+    current2->next = newEdge2;
+    head2->numEdges = head2->numEdges + 1;
+    */
 }
 
 bool Graphs_P3::isEdge(int from, int to) {
@@ -136,9 +149,9 @@ vector<int> Graphs_P3::getAdjacent(int vertex) {
 
 void Graphs_P3::printDijkstra(int source) {
     priority_queue<vertPair, vector<vertPair>, greater<vertPair>> pq;
-    vector<int> weights(numVerticies, INF);
+    vector<int> weights(MAX_NUM_VERTICIES, INF);
     string pathBase = to_string(source);
-    vector<string> paths(numVerticies, pathBase);
+    vector<string> paths(MAX_NUM_VERTICIES, pathBase);
 
     pq.push(make_pair(0, source));
     weights[source] = 0;
@@ -148,7 +161,6 @@ void Graphs_P3::printDijkstra(int source) {
         pq.pop();
         vertexNode *top = &vertArray[D];
         vertexNode *current = top->next;
-
 
         while(current != nullptr){
             if (weights[current->value] > weights[top->value] + current->weight){
@@ -160,12 +172,18 @@ void Graphs_P3::printDijkstra(int source) {
         }
     }
 
-    cout<< "V D\n";
-    for (int i = 0; i < numVerticies; ++i) {
+    cout<< "V D P\n";
+    for (int i = 0; i < MAX_NUM_VERTICIES; ++i) {
         if (i != source) {
-            cout << i << " " << weights[i] << " " << paths[i] << "\n";
+            if(checkForVertex[i] == 1) {
+                cout << i << " " << weights[i] << " " << paths[i] << "\n";
+            }
         }
     }
+}
+
+void Graphs_P3::printGraph() {
+
 }
 
 int main()
