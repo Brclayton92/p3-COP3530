@@ -172,30 +172,39 @@ void Graphs_P3::printDijkstra(int source) {
         }
     }
 
+    int counter = 1;
     cout<< "V D P\n";
     for (int i = 0; i < MAX_NUM_VERTICIES; ++i) {
         if (i != source) {
             if(checkForVertex[i] == 1) {
-                cout << i << " " << weights[i] << " " << paths[i] << "\n";
+                cout << i << " " << weights[i] << " " << paths[i];
+                counter++;
+                if (counter != numVerticies){
+                    cout << "\n";
+                }
             }
         }
     }
 }
 
 void Graphs_P3::printGraph() {
+    int counter = 0;
     for (int i = 0; i < MAX_NUM_VERTICIES; i ++){
         if (checkForVertex[i] == 1) {
-            cout << vertArray[i].value<< " ";
+            cout << vertArray[i].value;
             vector<int> adjacent = getAdjacent(vertArray[i].value);
             int size = adjacent.size();
             int j;
             j=0;
             while(j<size)
             {
-                cout<<adjacent[j]<<" ";
+                cout<< " " << adjacent[j];
                 j++;
             }
-            cout<<"\n";
+            counter++;
+            if (counter != numVerticies) {
+                cout << "\n";
+            }
         }
     }
 }
