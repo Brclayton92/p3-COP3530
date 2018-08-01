@@ -148,17 +148,17 @@ vector<int> Graphs_P3::getAdjacent(int vertex) {
 }
 
 void Graphs_P3::printDijkstra(int source) {
-    priority_queue<vertPair, vector<vertPair>, greater<vertPair>> pq;
+    priority_queue<vertPair, vector<vertPair>, greater<vertPair>> minHeap;
     vector<int> weights(MAX_NUM_VERTICIES, INF);
     string pathBase = to_string(source);
     vector<string> paths(MAX_NUM_VERTICIES, pathBase);
 
-    pq.push(make_pair(0, source));
+    minHeap.push(make_pair(0, source));
     weights[source] = 0;
 
-    while(!pq.empty()){
-        int D = pq.top().second;
-        pq.pop();
+    while(!minHeap.empty()){
+        int D = minHeap.top().second;
+        minHeap.pop();
         vertexNode *top = &vertArray[D];
         vertexNode *current = top->next;
 
@@ -166,7 +166,7 @@ void Graphs_P3::printDijkstra(int source) {
             if (weights[current->value] > weights[top->value] + current->weight){
                 weights[current->value] = weights[top->value] + current->weight;
                 paths[current->value] = paths[top->value] + "-" + to_string(current->value);
-                pq.push(make_pair(weights[current->value], current->value));
+                minHeap.push(make_pair(weights[current->value], current->value));
             }
             current = current->next;
         }
