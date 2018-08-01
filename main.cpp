@@ -173,9 +173,9 @@ void Graphs_P3::printDijkstra(int source) {
 
         while(adjToTop != nullptr){
             if (weights[adjToTop->name] > weights[top->name] + adjToTop->weight){ // checks if there is a path through *top that is shorter than adjToTop's current smallest path from source
-                weights[adjToTop->name] = weights[top->name] + adjToTop->weight;
-                paths[adjToTop->name] = paths[top->name] + "-" + to_string(adjToTop->name);
-                minHeap.push(make_pair(weights[adjToTop->name], adjToTop->name));
+                weights[adjToTop->name] = weights[top->name] + adjToTop->weight; // if there is a new path through *top for adjToTop, changes the value of wieghts[adjToTop->name] to reflect that
+                paths[adjToTop->name] = paths[top->name] + "-" + to_string(adjToTop->name); // if there is a new path through *top for adjToTop, changes the string in paths[adjToTop->name] to reflect that
+                minHeap.push(make_pair(weights[adjToTop->name], adjToTop->name)); // adds new pair to minheap to reflect changes in weight-from-source of adjToTop-vertex
             }
             adjToTop = adjToTop->next;
         }
