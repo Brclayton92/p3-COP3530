@@ -28,9 +28,9 @@ class Graphs_P3
 private:
     const int INF = std::numeric_limits<int>::max();
     const static int MAX_NUM_VERTICIES = 51;
-    vertexNode vertArray[51];
+    vertexNode vertArray[MAX_NUM_VERTICIES];
     int numVerticies = 0;
-    int checkForVertex[51];
+    int checkForVertex[MAX_NUM_VERTICIES];
 public:
     /* constructor */
 
@@ -183,7 +183,21 @@ void Graphs_P3::printDijkstra(int source) {
 }
 
 void Graphs_P3::printGraph() {
-
+    for (int i = 0; i < MAX_NUM_VERTICIES; i ++){
+        if (checkForVertex[i] == 1) {
+            cout << vertArray[i].value<< " ";
+            vector<int> adjacent = getAdjacent(vertArray[i].value);
+            int size = adjacent.size();
+            int j;
+            j=0;
+            while(j<size)
+            {
+                cout<<adjacent[j]<<" ";
+                j++;
+            }
+            cout<<"\n";
+        }
+    }
 }
 
 int main()
