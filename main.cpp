@@ -204,7 +204,7 @@ void Graphs_P3::printDijkstra(int source) {
     }
 }
 
-// average case run time: O(n*mlog(m)) (where n = MAX_NUM_VERTICES and m is the number of verts adjacent to the vertex with the most adjacent verts). no defined worst case because std::sort in get adjacent has no guaranteed upper bound.
+// average case run time: O(n*mlog(m)) (where n = MAX_NUM_VERTICES and m is the average number of edges per vertex. no defined worst case because std::sort in get adjacent has no guaranteed upper bound.
 void Graphs_P3::printGraph() {
     int counter = 0;
     for (int i = 0; i < MAX_NUM_VERTICIES; i ++){
