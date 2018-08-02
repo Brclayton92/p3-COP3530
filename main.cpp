@@ -156,7 +156,7 @@ vector<int> Graphs_P3::getAdjacent(int vertex) {
     return arr;
 }
 
-// worst case complexity: O(V*log(E)) where V = number of verts in G, and E = number of edges in G.
+// worst case complexity: O(E*log(V)) where V = number of verts in G, and E = number of edges in G.
 void Graphs_P3::printDijkstra(int source) {
     priority_queue<vertPair, vector<vertPair>, greater<vertPair>> minHeap; //Minheap of pairs contraining (weight from source, vertex name)
     vector<int> weights(MAX_NUM_VERTICIES, INF); // vector of weights from source for each vert (weights[vert1->name] = weight1), all weights start at INF
