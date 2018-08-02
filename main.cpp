@@ -56,12 +56,14 @@ public:
     bool isVertex(int vertex);
 };
 
+//Run in O(1) time
 void Graphs_P3::insertVertex(int vertex) {
     vertArray[vertex] = vertexNode(vertex, true, -999, nullptr);
     checkForVertex[vertex] = 1;
     numVerticies++;
 }
 
+//Runs in O(1) time
 bool Graphs_P3::isVertex(int vertex) {
     if (checkForVertex[vertex] == 0){
         return false;
@@ -72,6 +74,7 @@ bool Graphs_P3::isVertex(int vertex) {
     }
 }
 
+// runs in O(n) time in worst case ( n = number of verts in G)
 void Graphs_P3::insertEdge(int from, int to, int weight) {
     if(!isVertex(from)){
         insertVertex(from);
@@ -107,6 +110,7 @@ void Graphs_P3::insertEdge(int from, int to, int weight) {
     */
 }
 
+//runs in O(n) time in worst case ( n = number of verts in G)
 bool Graphs_P3::isEdge(int from, int to) {
     vertexNode *current = &vertArray[from];
 
@@ -120,6 +124,7 @@ bool Graphs_P3::isEdge(int from, int to) {
     return false;
 }
 
+//runs in O(n) time in the worst case (n = number of verts in G)
 // FIXME getweight() causes segfault when checking weight of an edge that doesn't exist
 int Graphs_P3::getWeight(int from, int to) {
     vertexNode *current = &vertArray[from];
@@ -134,6 +139,7 @@ int Graphs_P3::getWeight(int from, int to) {
     return std::numeric_limits<int>::max();
 }
 
+// average case complexity: O(n*log(n)). No defined worst case because std::sort has no guaranteed upper bounded
 vector<int> Graphs_P3::getAdjacent(int vertex) {
     vertexNode *curr = &vertArray[vertex];
     vector<int> arr;
@@ -150,6 +156,7 @@ vector<int> Graphs_P3::getAdjacent(int vertex) {
     return arr;
 }
 
+// worst case complexity: O(V*log(E)) where V = number of verts in G, and E = number of edges in G.
 void Graphs_P3::printDijkstra(int source) {
     priority_queue<vertPair, vector<vertPair>, greater<vertPair>> minHeap; //Minheap of pairs contraining (weight from source, vertex name)
     vector<int> weights(MAX_NUM_VERTICIES, INF); // vector of weights from source for each vert (weights[vert1->name] = weight1), all weights start at INF
@@ -197,6 +204,7 @@ void Graphs_P3::printDijkstra(int source) {
     }
 }
 
+// average case run time: O(n*mlog(m)) (where n = MAX_NUM_VERTICES and m is the number of verts adjacent to the vertex with the most adjacent verts). no defined worst case because std::sort in get adjacent has no guaranteed upper bound.
 void Graphs_P3::printGraph() {
     int counter = 0;
     for (int i = 0; i < MAX_NUM_VERTICIES; i ++){
